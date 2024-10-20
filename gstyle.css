@@ -169,7 +169,7 @@ body {
 
 #test-fate-btn {
     position: absolute !important;
-    bottom: 20px;
+    bottom: 50px;
     left: 50%;
     transform: translateX(-50%);
     padding: 15px 30px;
