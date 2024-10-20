@@ -1,0 +1,483 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    overflow: hidden;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Loader Styling ===========================*/
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #8B0000; 
+    transition: opacity 1s ease;
+}
+
+.blood-red-screen {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-color: #8B0000; 
+}
+
+.witch-broom {
+    position: absolute;
+    bottom: 30%;
+    left: -100px;
+    width: 200px;
+    height: 150px;
+    background: url('witch.png') no-repeat center center / contain;
+    animation: flying 4s linear infinite;
+}
+
+@keyframes flying {
+    from { left: -100px; }
+    to { left: 110%; }
+}
+
+/* Dark Room Container ======================================== */
+#scary-room {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+.room-overlay{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#room-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+#chair {
+    position: absolute;
+    bottom: -6%;
+    right: 20px;
+    width: 500px !important;
+    height: auto;
+    z-index: 1;
+}
+
+#bulb {
+    position: absolute;
+    top: 10%;
+    right: 32%;
+    width: 40px;
+    height: 40px;
+    background: #eee;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff;
+    z-index: 1;
+}
+
+@keyframes bulb-flicker {
+    0%, 100% { opacity: 1; box-shadow: 0 0 10px #fff, 0 0 20px #fff; }
+    50% { opacity: 0.3; box-shadow: none; }
+}
+
+#bulb {
+    animation: bulb-flicker 0.5s infinite;
+}
+
+#book {
+    position: absolute;
+    bottom: 28%;
+    left: 33%;
+    width: 80px;
+    z-index: 1;
+}
+
+#ghost {
+    position: absolute;
+    width: 300px;
+    height: auto;
+    z-index: 1;
+    display: none;
+    opacity: 0;
+}
+@media only screen and (max-width: 1030px) {
+    #chair {
+        width: 500px !important;
+        left: 50%;
+    }
+    #bulb {
+        right: 20%;
+    }
+    #book {
+        width: 120px;
+        left: 13%;
+        bottom: 35%;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    #book {
+        width: 100px;
+    }
+    #chair {
+        left: 10% !important;
+    }
+    #bulb {
+        top: 6%;
+        right: 24%;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    #chair {
+        width: 400px !important;
+    }
+    #book {
+        width: 80px;
+    }
+}
+
+/* game styling ================================================== */
+.scroll-modal {
+    background: url('scroll-background.png') no-repeat center center;
+    background-size: cover;
+    padding: 20px;
+    color: #fff;
+    text-align: center;
+    border: 5px solid #d4a017;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+}
+
+#test-fate-btn {
+    position: absolute !important;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 30px;
+    background: darkred;
+    color: white;
+    font-family: 'Creepster', cursive;
+    font-size: 18px;
+    border: 2px solid darkred;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0px 0px 15px rgba(255, 0, 0, 0.8), 0px 0px 30px rgba(0, 0, 0, 0.5);
+    text-shadow: 2px 2px 5px black;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 10;
+    overflow: hidden;
+}
+
+#test-fate-btn::before, #test-fate-btn::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.6), 0 0 40px rgba(255, 0, 0, 0.3);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+#test-fate-btn:hover {
+    background: crimson;
+    box-shadow: 0px 0px 20px rgba(255, 0, 0, 0.9), 0px 0px 35px rgba(0, 0, 0, 0.6);
+    transform: translateX(-50%) scale(1.1); 
+}
+
+#test-fate-btn:hover::before, #test-fate-btn:hover::after {
+    opacity: 1;
+}
+
+#test-fate-btn:hover {
+    animation: pulse 1s ease-in-out infinite alternate;
+}
+
+#test-fate-btn:focus {
+    outline: none;
+    background: crimson;
+    box-shadow: 0 0 25px rgba(255, 0, 0, 0.9), 0 0 45px rgba(255, 0, 0, 0.6);
+    animation: shake 0.5s infinite;
+}
+
+@keyframes shake {
+  0% { transform: translateX(-50%) translateY(0); }
+  25% { transform: translateX(-50%) translateY(-3px); }
+  50% { transform: translateX(-50%) translateY(3px); }
+  75% { transform: translateX(-50%) translateY(-2px); }
+  100% { transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.9), 0 0 35px rgba(255, 0, 0, 0.7);
+    }
+    100% {
+        box-shadow: 0 0 25px rgba(255, 0, 0, 1), 0 0 50px rgba(255, 0, 0, 0.9);
+    }
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* quize css  */
+.modal-content {
+    max-width: 100%;
+    width: 650px;
+    height: auto;
+    background: rgba(0, 0, 0, 0.85);
+    background-image: url('scroll.jpg');
+    background-size: cover;
+    padding: 30px;
+    border-radius: 12px;
+    color: #f5f5f5;
+    text-align: center;
+    animation: modalAppear 1s ease-in-out; 
+    z-index: 999;
+    margin: 0 auto;
+}
+
+#question-title {
+    font-family: 'Creepster', cursive;
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: crimson;
+    text-shadow: 2px 2px 5px black;
+}
+
+#question-text {
+    font-family: 'Creepster', cursive;
+    font-size: 22px;
+    color: #f5f5f5;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 5px black;
+}
+
+#quiz-form label {
+    display: block;
+    font-size: 20px;
+    font-family: 'Creepster', cursive;
+    color: white;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 2px solid crimson;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 8px;
+    transition: background 0.3s, transform 0.2s ease;
+    cursor: pointer;
+}
+
+#quiz-form input[type="radio"] {
+    margin-right: 10px;
+}
+
+#quiz-form label:hover {
+    background: crimson;
+    transform: scale(1.05); 
+}
+
+#next-fear {
+    padding: 15px 40px;
+    margin-top: 20px;
+    background: darkred;
+    color: white;
+    font-family: 'Creepster', cursive;
+    font-size: 22px;
+    border: 2px solid crimson;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+#next-fear:hover {
+    background: crimson;
+    box-shadow: 0 0 15px crimson;
+}
+
+@keyframes modalAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* jumpscare css  */
+.scare-modal {
+    background: black;
+    color: white;
+    padding: 30px;
+    position: relative;
+    text-align: center;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 0 100px rgba(255, 0, 0, 0.9); 
+    animation: shakeModal 0.5s infinite; 
+    z-index: 9999;
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#jumpscare-image {
+    max-width: 100%;
+    height: auto;
+    opacity: 0;
+    animation: fadeInGhost 0.2s ease-out forwards, suddenZoom 1s 0.3s ease-in; 
+}
+
+.scare-modal h2 {
+    font-family: 'Creepster', cursive;
+    font-size: 40px;
+    color: red;
+    text-shadow: 3px 3px 10px black, 5px 5px 15px crimson; 
+    margin-top: 20px;
+    letter-spacing: 2px;
+    opacity: 0;
+    animation: fadeInText 1s ease forwards 1s; 
+}
+
+#try-again {
+    margin-top: 30px;
+    padding: 15px 30px;
+    background-color: crimson;
+    color: white;
+    font-family: 'Creepster', cursive;
+    font-size: 24px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+#try-again:hover {
+    background-color: darkred;
+    box-shadow: 0 0 20px crimson;
+}
+
+@keyframes shakeModal {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-10px); }
+    40% { transform: translateX(10px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+}
+
+@keyframes fadeInGhost {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes suddenZoom {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
+}
+
+@keyframes fadeInText {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+body.modal-active {
+    animation: backgroundFlash 0.3s ease-in-out infinite;
+}
+
+@keyframes backgroundFlash {
+    0% { background-color: black; }
+    50% { background-color: red; }
+    100% { background-color: black; }
+}
+
+.modal-active .scare-modal {
+    animation: suddenFlash 0.2s ease-in-out 0.2s, shakeModal 0.5s infinite;
+}
+
+@keyframes suddenFlash {
+    0% { background-color: black; opacity: 0; }
+    100% { background-color: black; opacity: 1; }
+}
+
+/* finish css  */
+.holy-scroll {
+    background: url('scroll.jpg') no-repeat center center;
+    background-size: cover;
+    height: 300px; 
+    width: 500px; 
+    padding: 20px;
+    position: relative;
+    border: 6px solid goldenrod; 
+    box-shadow: 0 0 30px rgba(255, 223, 0, 0.8); 
+    border-radius: 10px; 
+    overflow: hidden;
+    animation: scrollGlow 3s ease-in-out infinite; 
+    z-index: 9999;
+    text-align: center;
+}
+
+.holy-scroll h2 {
+    font-family: 'Cinzel Decorative', serif; 
+    font-size: 40px;
+    color: #fb5000; 
+    text-shadow: 2px 2px 5px rgba(255, 85, 0, 0.8), 0 0 20px rgba(253, 95, 15, 0.7); 
+    margin-top: 50px;
+    letter-spacing: 3px;
+    animation: fadeInTitle 2s ease-in-out; 
+}
+
+@keyframes scrollGlow {
+    0% { box-shadow: 0 0 20px rgba(255, 223, 0, 0.8); }
+    50% { box-shadow: 0 0 40px rgba(255, 223, 0, 1); }
+    100% { box-shadow: 0 0 20px rgba(255, 223, 0, 0.8); }
+}
+
+@keyframes fadeInTitle {
+    0% { opacity: 0; transform: translateY(-50px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.modal-content {
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+    }
+}
